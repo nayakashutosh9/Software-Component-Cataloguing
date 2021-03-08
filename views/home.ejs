@@ -71,25 +71,41 @@
         <div class="row">
           <%for(var j=0;(i+j)<components.length && j<2;j++){%>
             <div class="col-md-6">
-              <div class="card">
-                <h1><%= components[i+j].name %></h1>
-                <div class="row">
-                  <div class="col-xs-6 l1-left">
-                    <h4><%= components[i+j].type %></h4>
+              <a href="/detail/<%= components[i+j]._id %>" style="color:black;text-decoration: none;">
+                <div class="card">
+                  <h1><%= components[i+j].name %></h1>
+                  <div class="row">
+                    <div class="col-xs-6 l1-left">
+                      <h4><%= components[i+j].type %></h4>
+                    </div>
+                    <div class="col-xs-6 l1-left">
+                      <h4><%= components[i+j].category %></h4>
+                    </div>
                   </div>
-                  <div class="col-xs-6 l1-left">
-                    <h4><%= components[i+j].category %></h4>
+                  <div class="row">
+                    <div class="col-xs-6 l1-left">
+                      <p>By <%= components[i+j].author %></p>
+                    </div>
+                    <div class="col-xs-6 l1-left">
+                      <p><%= components[i+j].formated_date %></p>
+                    </div>
                   </div>
+                  <%if(user && String(user._id)===String(components[i+j].userid)){%>
+                    <div class="row">
+                      <div class="col-xs-6 mod-btn">
+                        <a href="/edit/<%= components[i+j]._id %>">
+                          <button type="button" name="button" class="edit-button"><i class="fa fa-edit"></i></button>
+                        </a>
+                      </div>
+                      <div class="col-xs-6">
+                        <a href="/delete/<%= components[i+j]._id %>">
+                          <button type="button" name="button" class="delete-button"><i class="fa fa-trash"></i></button>
+                        </a>
+                      </div>
+                    </div>
+                  <%}%>
                 </div>
-                <div class="row">
-                  <div class="col-xs-6 l1-left">
-                    <p>By <%= components[i+j].author %></p>
-                  </div>
-                  <div class="col-xs-6 l1-left">
-                    <p><%= components[i+j].formated_date %></p>
-                  </div>
-                </div>
-              </div>
+              </a>
             </div>
           <%}%>
         </div>

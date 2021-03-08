@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/add.css">
   <title>Software-Component-Cataloguing-Edit</title>
 </head>
 
@@ -62,14 +63,67 @@
       </div>
     </div>
   </div>
-  <br><br><br>
+  <br><br><br><br><br>
+
+  <form action="/edit/<%= component._id %>" method="post">
+
+
+  <div>
+    <label class="desc" id="title1" for="Field1">Component Name</label>
+    <div>
+      <input id="Field1" name="name" type="text" class="field text fn" value="<%= component.name %>" size="8" tabindex="1" required>
+    </div>
+  </div>
+
+
+  <div>
+    <label class="desc" id="title106" for="Field106">
+    	Select a Type
+    </label>
+    <div>
+    <select id="Field106" name="type" class="field select medium" tabindex="11">
+      <option <%= component.type==='Application Software' ? 'selected' : '' %> >Application Software</option>
+      <option <%= component.type==='System Software' ? 'selected' : '' %> >System Software</option>
+    </select>
+    </div>
+  </div>
+
+  <div>
+    <label class="desc" id="title106" for="Field106">
+    	Select a Category
+    </label>
+    <div>
+    <select id="Field106" name="category" class="field select medium" tabindex="11">
+      <%for(var i=0;i<categories.length;i++){%>
+        <option <%= categories[i].name===component.category ? 'selected' : '' %> ><%=categories[i].name%></option>
+      <%}%>
+    </select>
+    </div>
+  </div>
+
+
+  <div>
+    <label class="desc" id="title4" for="Field4">
+      Description
+    </label>
+
+    <div>
+      <textarea id="Field4" name="description" spellcheck="true" rows="10" cols="10" tabindex="4" required><%= component.description %></textarea>
+    </div>
+  </div>
+
+
+  <div>
+		<div>
+  		<input id="saveForm" name="saveForm" type="submit" value="Update">
+    </div>
+	</div>
+</form>
 
 
 
 
-
-
-
+  <br>
     <!-- contact section -->
     <footer id="contact" class="contact-section">
       <br><br>

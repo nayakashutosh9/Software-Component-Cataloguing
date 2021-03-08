@@ -125,6 +125,97 @@ app.post("/add",function(req,res){
 
 
 
+app.get("/detail/:cid",async function(req,res){
+  var componentId=req.params.cid;
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  await Component.findOne({_id:componentId}).exec(function(err,foundComponent){
+    if(err){
+      res.send(err);
+    }
+    else{
+      res.render("detail",{user:curUser,component:foundComponent});
+    }
+  })
+});
+
+
+
+app.get("/edit/:cid",async function(req,res){
+  var componentId=req.params.cid;
+  if(req.isAuthenticated()){
+    await Component.findOne({_id:componentId}).exec(async function(err,foundComponent){
+      if(err){
+        res.send(err);
+      }
+      else{
+        await Category.find().exec(function(err,foundCategories){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.render("edit",{user:req.user,component:foundComponent,categories:foundCategories});
+          }
+        })
+      }
+    })
+  }
+  else{
+    res.redirect("/login");
+  }
+});
+
+
+
+app.post("/edit/:cid",async function(req,res){
+  var componentId=req.params.cid;
+  if(req.isAuthenticated()){
+    const result=await Component.updateOne({_id:componentId},{
+      $set:{
+        name: req.body.name,
+        type: req.body.type,
+        category: req.body.category,
+        description: req.body.description
+      }
+    });
+    res.redirect("/detail/"+componentId);
+  }
+  else{
+    res.redirect("/login");
+  }
+});
+
+
+
+app.get("/delete/:cid",function(req,res){
+  var componentId=req.params.cid;
+  if(req.isAuthenticated()){
+    res.render("delete",{user:req.user,componentId:componentId});
+  }
+  else{
+    res.redirect("/login");
+  }
+});
+
+
+
+app.post("/delete/:cid",async function(req,res){
+  var componentId=req.params.cid;
+  if(req.isAuthenticated()){
+    const result=await Component.deleteOne({_id:componentId});
+    res.redirect("/");
+  }
+  else{
+    res.redirect("/login");
+  }
+});
+
+
+
+
+
 app.get("/terms", function(req, res) {
   var curUser = null;
   if (req.isAuthenticated()) {
