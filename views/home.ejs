@@ -63,14 +63,42 @@
       </div>
     </div>
   </div>
-  <br><br><br>
+  <br><br><br><br>
+
+
+    <div class="container">
+      <%for(var i=0;i<components.length;i=i+2){%>
+        <div class="row">
+          <%for(var j=0;(i+j)<components.length && j<2;j++){%>
+            <div class="col-md-6">
+              <div class="card">
+                <h1><%= components[i+j].name %></h1>
+                <div class="row">
+                  <div class="col-xs-6 l1-left">
+                    <h4><%= components[i+j].type %></h4>
+                  </div>
+                  <div class="col-xs-6 l1-left">
+                    <h4><%= components[i+j].category %></h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 l1-left">
+                    <p>By <%= components[i+j].author %></p>
+                  </div>
+                  <div class="col-xs-6 l1-left">
+                    <p><%= components[i+j].formated_date %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <%}%>
+        </div>
+      <%}%>
+    </div>
 
 
 
-
-
-
-
+    <br>
     <!-- contact section -->
     <footer id="contact" class="contact-section">
       <br><br>
