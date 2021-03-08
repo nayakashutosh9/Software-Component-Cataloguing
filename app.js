@@ -37,10 +37,118 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+const componentSchema=new mongoose.Schema({
+  name: String,
+  type: String,
+  category: String,
+  description: String,
+  userid: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
+});
+
+const Component=new mongoose.model("Component",componentSchema);
+
+const categorySchema=new mongoose.Schema({
+  name:String
+});
+
+const Category=new mongoose.model("Category",categorySchema);
+
 
 
 app.get("/",function(req,res){
-  res.send("hello from server");
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  res.render("home",{user:curUser});
+});
+
+
+
+
+app.get("/add",async function(req,res){
+  if(req.isAuthenticated()){
+    await Category.find().exec(function(err, foundCategories) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.render("add", {
+          user:req.user,
+          categories: foundCategories
+        });
+      }
+    });
+  }
+  else{
+    res.redirect("/login",{user:null});
+  }
+});
+
+
+
+app.post("/add",function(req,res){
+  if(req.isAuthenticated()){
+    console.log(req.body.name);
+    console.log(req.body.description);
+    console.log(req.body.type);
+    console.log(req.body.category);
+    res.redirect("/add");
+  }
+  else{
+    res.redirect("/login",{user:null});
+  }
+});
+
+
+
+app.get("/terms", function(req, res) {
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  res.render("info", {
+    title: "Terms",
+    user: curUser
+  });
+});
+
+
+app.get("/privacy", function(req, res) {
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  res.render("info", {
+    title: "Privacy Policy",
+    user: curUser
+  });
+});
+
+
+app.get("/refund", function(req, res) {
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  res.render("info", {
+    title: "Refund Policy",
+    user: curUser
+  });
+});
+
+
+app.get("/disclaimer", function(req, res) {
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  res.render("info", {
+    title: "Disclaimer",
+    user: curUser
+  });
 });
 
 
