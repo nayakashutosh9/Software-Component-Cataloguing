@@ -45,6 +45,80 @@ app.get("/",function(req,res){
 
 
 
+app.get("/login", function(req, res) {
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+  } else {
+    res.render("login", {
+      user: null
+    });
+  }
+});
+
+
+
+app.post("/login", function(req, res) {
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+  req.login(user, async function(err) {
+    if (err) {
+      console.log(err);
+      res.redirect("/login");
+    } else {
+      await passport.authenticate("local")(req, res, function() {
+        res.redirect("/");
+      });
+    }
+  })
+});
+
+
+
+app.get("/logout", function(req, res) {
+  if (req.isAuthenticated()) {
+    req.logout();
+    res.redirect("/");
+  } else {
+    res.redirect("/");
+  }
+});
+
+
+
+app.get("/register", function(req, res) {
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+  } else {
+    res.render("register", {
+      user: null
+    });
+  }
+});
+
+
+
+
+app.post("/register", function(req, res) {
+  User.register({
+    username: req.body.username,
+    name: req.body.name,
+    admin: false
+  }, req.body.password, async function(err, user) {
+    if (err) {
+      res.send(err.message + " go back and use different email as username.");
+      res.redirect("/register");
+    } else {
+      await passport.authenticate("local")(req, res, function() {
+        res.redirect("/");
+      });
+    }
+  });
+});
+
+
+
 
 
 const PORT = process.env.PORT || 3000;
