@@ -68,13 +68,50 @@ app.get("/",async function(req,res){
   if (req.isAuthenticated()) {
     curUser = req.user;
   }
-  await Component.find().sort({date:-1}).exec(function(err,foundComponents){
+  await Component.find().sort({date:-1}).exec(async function(err,foundComponents){
     if(err){
       console.log(err);
       res.redirect("/");
     }
     else{
-      res.render("home",{user:curUser,components:foundComponents});
+      await Category.find().exec(function(err,foundCategories){
+        if(err){
+          res.send(err);
+        }
+        else{
+          res.render("home",{user:curUser,components:foundComponents,categories:foundCategories});
+        }
+      });
+    }
+  });
+});
+
+
+
+app.post("/search",async function(req,res){
+  var curUser = null;
+  if (req.isAuthenticated()) {
+    curUser = req.user;
+  }
+  var name="",author="",type="",category="",sort=-1;
+  if(req.body.sort==="Ascending") sort=1;
+  if(req.body.type!=="Select Type") type=req.body.type;
+  if(req.body.category!=="Select Category") type=req.body.category;
+  if(req.body.name) name=req.body.name;
+  if(req.body.author) author=req.body.author;
+  await Component.find({name:{$regex:name},author:{$regex:author},type:{$regex:type},category:{$regex:category}}).sort({date:sort}).exec(async function(err,foundComponents){
+    if(err){
+      res.send(err);
+    }
+    else{
+      await Category.find().exec(function(err,foundCategories){
+        if(err){
+          res.send(err);
+        }
+        else{
+          res.render("home",{user:curUser,components:foundComponents,categories:foundCategories});
+        }
+      });
     }
   });
 });

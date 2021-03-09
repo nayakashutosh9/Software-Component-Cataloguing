@@ -66,69 +66,132 @@
   <br><br><br><br>
 
 
-    <div class="container">
-      <%for(var i=0;i<components.length;i=i+2){%>
-        <div class="row">
-          <%for(var j=0;(i+j)<components.length && j<2;j++){%>
-            <div class="col-md-6">
-              <a href="/detail/<%= components[i+j]._id %>" style="color:black;text-decoration: none;">
-                <div class="card">
-                  <h1><%= components[i+j].name %></h1>
-                  <div class="row">
-                    <div class="col-xs-6 l1-left">
-                      <h4><%= components[i+j].type %></h4>
-                    </div>
-                    <div class="col-xs-6 l1-left">
-                      <h4><%= components[i+j].category %></h4>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-6 l1-left">
-                      <p>By <%= components[i+j].author %></p>
-                    </div>
-                    <div class="col-xs-6 l1-left">
-                      <p><%= components[i+j].formated_date %></p>
-                    </div>
-                  </div>
-                  <%if(user && String(user._id)===String(components[i+j].userid)){%>
-                    <div class="row">
-                      <div class="col-xs-6 mod-btn">
-                        <a href="/edit/<%= components[i+j]._id %>">
-                          <button type="button" name="button" class="edit-button"><i class="fa fa-edit"></i></button>
-                        </a>
-                      </div>
-                      <div class="col-xs-6">
-                        <a href="/delete/<%= components[i+j]._id %>">
-                          <button type="button" name="button" class="delete-button"><i class="fa fa-trash"></i></button>
-                        </a>
-                      </div>
-                    </div>
-                  <%}%>
-                </div>
-              </a>
-            </div>
-          <%}%>
+  <div class="container">
+    <form class="search-form" action="/search" method="post">
+      <div class="row">
+        <div class="col-xs-8 search-bar">
+          <input type="text" name="name" value="" placeholder="Search Component">
         </div>
-      <%}%>
-    </div>
+        <div class="col-xs-4 author-bar">
+          <input type="text" name="author" value="" placeholder="Search Author">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-6">
+          <select class="dropdown-bar" name="type">
+            <option>Select Type</option>
+            <option>Application Software</option>
+            <option>System Software</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-xs-6">
+          <select class="dropdown-bar" name="category">
+            <option>Select Category</option>
+            <%for(var i=0;i<categories.length;i++){%>
+              <option><%=categories[i].name%></option>
+            <%}%>
+          </select>
+        </div>
+        <div class="col-md-3 col-xs-6">
+          <select class="dropdown-bar" name="sort">
+            <option>Sort By</option>
+            <option>Ascending</option>
+            <option>Descending</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-xs-6">
+          <button type="submit" name="button" class="search-button">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="container">
+    <%if(components.length>0){%>
+        <%for(var i=0;i<components.length;i=i+2){%>
+          <div class="row">
+            <%for(var j=0;(i+j)<components.length && j<2;j++){%>
+              <div class="col-md-6">
+                <a href="/detail/<%= components[i+j]._id %>" style="color:black;text-decoration: none;">
+                  <div class="card">
+                    <h1><%= components[i+j].name %></h1>
+                    <div class="row">
+                      <div class="col-xs-6 l1-left">
+                        <h4><%= components[i+j].type %></h4>
+                      </div>
+                      <div class="col-xs-6 l1-left">
+                        <h4><%= components[i+j].category %></h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-6 l1-left">
+                        <p>By <%= components[i+j].author %></p>
+                      </div>
+                      <div class="col-xs-6 l1-left">
+                        <p><%= components[i+j].formated_date %></p>
+                      </div>
+                    </div>
+                    <%if(user && String(user._id)===String(components[i+j].userid)){%>
+                      <div class="row">
+                        <div class="col-xs-6 mod-btn">
+                          <a href="/edit/<%= components[i+j]._id %>">
+                            <button type="button" name="button" class="edit-button"><i class="fa fa-edit"></i></button>
+                          </a>
+                        </div>
+                        <div class="col-xs-6">
+                          <a href="/delete/<%= components[i+j]._id %>">
+                            <button type="button" name="button" class="delete-button"><i class="fa fa-trash"></i></button>
+                          </a>
+                        </div>
+                      </div>
+                    <%}%>
+                  </div>
+                </a>
+              </div>
+            <%}%>
+          </div>
+        <%}%>
+    <%}else{%>
+        <div class="card">
+          <h1>No components found</h1>
+        </div>
+    <%}%>
+  </div>
+
 
 
 
     <br>
     <!-- contact section -->
-    <footer id="contact" class="contact-section">
-      <br><br>
-      <div class="info">
-        <p><a href="/terms" style="color:black;">Terms</a></p>
-        <p><a href="/privacy" style="color:black;">Privacy Policy</a></p>
-        <p><a href="/refund" style="color:black;">Refund Policy</a></p>
-        <p><a href="/disclaimer" style="color:black;">Disclaimer</a></p>
-      </div>
-      <br>
-      <div class="cs-copy">
-        <p>Copyright since 2021 © Software Component Cataloguing Software</p>
-      </div>
-    </footer>
+    <%if(components.length<=2){%>
+      <footer id="contact" class="contact-section" style="position: absolute;width: 100%;">
+        <br><br>
+        <div class="info">
+          <p><a href="/terms" style="color:black;">Terms</a></p>
+          <p><a href="/privacy" style="color:black;">Privacy Policy</a></p>
+          <p><a href="/refund" style="color:black;">Refund Policy</a></p>
+          <p><a href="/disclaimer" style="color:black;">Disclaimer</a></p>
+        </div>
+        <br>
+        <div class="cs-copy">
+          <p>Copyright since 2021 © Software Component Cataloguing Software</p>
+        </div>
+      </footer>
+    <%}else{%>
+      <footer id="contact" class="contact-section">
+        <br><br>
+        <div class="info">
+          <p><a href="/terms" style="color:black;">Terms</a></p>
+          <p><a href="/privacy" style="color:black;">Privacy Policy</a></p>
+          <p><a href="/refund" style="color:black;">Refund Policy</a></p>
+          <p><a href="/disclaimer" style="color:black;">Disclaimer</a></p>
+        </div>
+        <br>
+        <div class="cs-copy">
+          <p>Copyright since 2021 © Software Component Cataloguing Software</p>
+        </div>
+      </footer>
+    <%}%>
 
 
 
