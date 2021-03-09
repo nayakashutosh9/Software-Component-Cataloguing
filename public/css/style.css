@@ -538,6 +538,158 @@ hr {
 
 
 
+/* admin page */
+.admin-pp{
+  box-shadow: 2px 3px 2px 2px #b3b1b1;
+  border-radius: 15px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.admin-pp-img img{
+  width: 80%;
+}
+.admin-pp-img{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-pp h1{
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-top: 20px;
+}
+.admin-pp h3{
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+.admin-head{
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+.admin-pp hr{
+  color:#b3b1b1;
+  border: 1px solid #b3b1b1;
+  text-align: center;
+}
+.admin-pp .c1{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-pp .c2{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-pp .c3{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-pp button{
+  border-radius: 10px;
+  margin-top: 2px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+table td{
+  font-size: 0.9rem;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+
+
+
+
+
 
 
 

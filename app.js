@@ -119,6 +119,114 @@ app.post("/search",async function(req,res){
 
 
 
+app.get("/admin",async function(req,res){
+  if(req.isAuthenticated() && req.user.admin){
+    await Component.find().sort({date:-1}).exec(async function(err,foundComponents){
+      if(err){
+        res.send(err);
+      }
+      else{
+        await Category.find().exec(function(err,foundCategories){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.render("admin",{user:req.user,components:foundComponents,categories:foundCategories});
+          }
+        })
+      }
+    });
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+app.post("/category/add",function(req,res){
+  if(req.isAuthenticated() && req.user.admin){
+    category=new Category({
+      name:req.body.category
+    });
+    category.save();
+    res.redirect("/admin");
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+app.get("/category/edit/:cid",async function(req,res){
+  var categoryId=req.params.cid;
+  if(req.isAuthenticated() && req.user.admin){
+    await Category.findOne({_id:categoryId}).exec(function(err,foundCategory){
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.render("cat",{user:req.user,category:foundCategory,categoryId:categoryId,type:"edit"});
+      }
+    });
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+app.post("/category/edit/:cid",async function(req,res){
+  var categoryId=req.params.cid;
+  if(req.isAuthenticated() && req.user.admin){
+    const result=await Category.updateOne({_id:categoryId},{$set:{name:req.body.category}});
+    res.redirect("/admin");
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+
+app.get("/category/delete/:cid",async function(req,res){
+  var categoryId=req.params.cid;
+  if(req.isAuthenticated() && req.user.admin){
+    await Category.findOne({_id:categoryId}).exec(function(err,foundCategory){
+      if(err){
+        res.send(err);
+      }
+      else{
+        res.render("cat",{user:req.user,category:foundCategory,categoryId:categoryId,type:"delete"});
+      }
+    });
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+
+app.post("/category/delete/:cid",async function(req,res){
+  var categoryId=req.params.cid;
+  if(req.isAuthenticated() && req.user.admin){
+    const result=await Category.deleteOne({_id:categoryId});
+    res.redirect("/admin");
+  }
+  else{
+    res.send("Not logged in/Admin access required");
+  }
+});
+
+
+
+
+
 app.get("/add",async function(req,res){
   if(req.isAuthenticated()){
     await Category.find().exec(function(err, foundCategories) {
